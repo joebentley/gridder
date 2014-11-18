@@ -24,7 +24,7 @@ def index():
         image = Image.open(f).convert('RGBA')
 
         # Add the grid lines
-        image = grid(image, ylines=10)
+        image = grid(image, ylines=int(request.form['ylines']))
 
         # Encode to base64, removing trailing newlines and serve
         return render_template('index.html', image_url=encode_image(image))
