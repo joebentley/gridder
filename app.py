@@ -26,15 +26,33 @@ def encode_image(image, extension):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Get the raw image, converted to RGB, from the request
+        ylines = int(request.form['ylines'])
+
+        # Check that ylines lies within [5, 50]
+        if not 5 <= ylines <= 50:
+            error = "<li>ylines must be between 5 and 50</li>"
+            return render_template('index.html', server_error=error)
+
         f = request.files['file']
-        image = Image.open(f).convert('RGBA')
+
+        # If no file is given, give an error
+        if not f:
+            error = "<li>The file field is required.</li>"
+            return render_template('index.html', server_error=error)
+
+        image = Image.open(f)
+
+        # If image dimensions are too large, error
+        if image.size[0] > 4000 and image.size[1] > 4000:
+            error = "<li>Please use images of dimensions less than 4000x4000</li>"
+            return render_template('index.html', server_error=error)
+
         _, extension = os.path.splitext(f.filename)
         # We don't want the . from the file extension
         extension = extension[1:]
 
         # Add the grid lines
-        image = grid(image, ylines=int(request.form['ylines']))
+        image = grid(image, ylines=ylines)
 
         # Encode to base64, removing trailing newlines and serve
         return render_template('index.html', image_format=extension,

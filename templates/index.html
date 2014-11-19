@@ -23,6 +23,9 @@
     {% endif %}
 
     <ul id="errors" class="bodytext">
+      {% autoescape false %}
+      {{ server_error }}
+      {% endautoescape %}
     </ul>
 
     <br/>
