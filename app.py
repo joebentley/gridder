@@ -46,6 +46,6 @@ def index():
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == 'production':
-        app.run(debug=False, port=os.environ['PORT'])
+        app.run(debug=False, port=str(os.environ['PORT']))
     else:
         app.run(debug=True)
