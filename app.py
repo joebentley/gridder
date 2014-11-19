@@ -29,10 +29,8 @@ def index():
         f = request.files['file']
         image = Image.open(f).convert('RGBA')
         _, extension = os.path.splitext(f.filename)
-
         # We don't want the . from the file extension
         extension = extension[1:]
-        print(extension)
 
         # Add the grid lines
         image = grid(image, ylines=int(request.form['ylines']))

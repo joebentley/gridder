@@ -29,8 +29,6 @@ def grid(im, ylines):
     mean = ImageStat.Stat(im).mean[:3]
     color = (0, 0, 0)
 
-    print((sum(mean) / float(len(mean))) / 255)
-
     # Take the average of the mean RGB values and normalize between 0 and 1
     if (sum(mean) / float(len(mean))) / 255 < 0.5:
         color = (255, 255, 255)

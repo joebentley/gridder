@@ -5,6 +5,10 @@
     <title>ImageGrid</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="{{ url_for('static', filename='bower_components/jquery/dist/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/validate.js') }}"></script>
+    <script src="{{ url_for('static', filename='lib/validation.js') }}"></script>
   </head>
 
   <body>
@@ -14,10 +18,16 @@
     <img style="width: 50%; height: 50%" src="data:image/{{ image_format }};base64,{{ image_url }}">
     {% endif %}
 
-    <form action="" method="post" enctype="multipart/form-data">
-      <input type="number" name="ylines">
+    <ul id="errors">
+    </ul>
+
+    <br/>
+
+    <form name="grid" action="" method="post" enctype="multipart/form-data">
+      <input type="text" name="ylines" id="ylines">
       <input type="file" name="file" accept="image/*">
       <input type="submit" value="Grid!">
     </form>
+
   </body>
 </html>
