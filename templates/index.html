@@ -12,21 +12,25 @@
   </head>
 
   <body>
-    <h1>Hello</h1>
+    <h1>Gridder</h1>
+
+    <div id="welcome" class="bodytext">
+      Enter an image and have a grid overlayed on it. Most formats should work.
+    </div>
 
     {% if image_url %}
     <img style="width: 50%; height: 50%" src="data:image/{{ image_format }};base64,{{ image_url }}">
     {% endif %}
 
-    <ul id="errors">
+    <ul id="errors" class="bodytext">
     </ul>
 
     <br/>
 
     <form name="grid" action="" method="post" enctype="multipart/form-data">
-      <input type="text" name="ylines" id="ylines">
-      <input type="file" name="file" accept="image/*">
-      <input type="submit" value="Grid!">
+      <input type="text" name="ylines" id="ylines"><br/>
+      <input type="file" name="file" accept="image/*"><br/>
+      <input type="submit" value="Grid!"><br/>
     </form>
 
   </body>
