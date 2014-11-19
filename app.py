@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, send_file
 from PIL import Image
-from grid import grid
+from lib.grid import grid
 import StringIO
 import base64
 import urllib
