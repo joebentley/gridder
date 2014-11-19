@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 
 import argparse, os
-from PIL import Image
+from PIL import Image, ImageStat
 
 """
 grid.py [-h] [-t filetype] [-o output_file] path_to_image number_of_lines
@@ -15,14 +15,25 @@ unless specified with -o.
 requires Python Imaging Library (PIL) or Pillow
 """
 
+
 def grid(im, ylines):
     """Overlay a grid with ylines number of lines over image.
 
        Keyword arguments:
-       im     -- image to overlay grid on
+       im     -- PIL image to overlay grid on
        ylines -- number of vertical lines"""
 
     nVert = ylines # No. vert lines
+
+    # If image has an average brightness < 0.5, use white lines
+    mean = ImageStat.Stat(im).mean[:3]
+    color = (0, 0, 0)
+
+    print((sum(mean) / float(len(mean))) / 255)
+
+    # Take the average of the mean RGB values and normalize between 0 and 1
+    if (sum(mean) / float(len(mean))) / 255 < 0.5:
+        color = (255, 255, 255)
 
     # Sample up the size of the image for even divisions, maintaining ratio
     # If we didn't do this, then some squares would be bigger than others due
@@ -39,12 +50,12 @@ def grid(im, ylines):
     # x value that is a multiple of the width of a single square
     for x in range(1, nVert):
         for y in range(0, im.size[1]):
-            pix[x * w - 1, y] = (0, 0, 0)
+            pix[x * w - 1, y] = color
 
     # Now draw the horizontal lines across the screen...
-    for y in range(1, nHoriz + 1):
+    for y in range(1, nHoriz):
         for x in range(0, im.size[0]):
-            pix[x, y * w] = (0, 0, 0)
+            pix[x, y * w] = color
 
     return im
 
