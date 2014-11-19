@@ -5,6 +5,7 @@ import StringIO
 import base64
 import urllib
 import os
+import sys
 
 app = Flask(__name__)
 
@@ -44,4 +45,7 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    if len(sys.argv) > 1 and sys.argv[1] == 'production':
+        app.run(debug=False)
+    else:
+        app.run(debug=True)
