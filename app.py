@@ -4,14 +4,20 @@ from grid import grid
 import StringIO
 import base64
 import urllib
+import os
 
 app = Flask(__name__)
 
 
-def encode_image(image):
+def encode_image(image, extension):
     """Encode the image in base64 format, removing trailing newlines."""
+
+    # Image.save will only take format="jpeg", not format="jpg"
+    if extension.lower() == "jpg":
+        extension = "jpeg"
+
     strIO = StringIO.StringIO()
-    image.save(strIO, 'JPEG')
+    image.save(strIO, format=extension)
     encoded = base64.b64encode(strIO.getvalue())
     return urllib.quote(encoded.rstrip('\n'))
 
@@ -22,12 +28,18 @@ def index():
         # Get the raw image, converted to RGB, from the request
         f = request.files['file']
         image = Image.open(f).convert('RGBA')
+        _, extension = os.path.splitext(f.filename)
+
+        # We don't want the . from the file extension
+        extension = extension[1:]
+        print(extension)
 
         # Add the grid lines
         image = grid(image, ylines=int(request.form['ylines']))
 
         # Encode to base64, removing trailing newlines and serve
-        return render_template('index.html', image_url=encode_image(image))
+        return render_template('index.html', image_format=extension,
+                                image_url=encode_image(image, extension))
 
     if request.method == 'GET':
         return render_template('index.html')
